@@ -1,3 +1,7 @@
+// // //------------------------------
+// // //Récupère les données de l'API
+// // //------------------------------
+
 function getProducts() {
   fetch("http://localhost:3000/api/products")
     .then(function (res) {
@@ -14,17 +18,20 @@ function getProducts() {
 }
 
 
+// // // //---------------------------------------------------------------------
+// // // //Integration des produits sur la page d'accueil
+// // // //---------------------------------------------------------------------
 function createProduct(product) {
   let productHTML = document.createElement("a");
-  productHTML.href = `./product.html?id=${product._id}`;
-  productHTML.innerHTML = `
-    <article>
-        <img src="${product.imageUrl}" alt="${product.altTxt}">
-        <h3 class="productName">${product.name}</h3>
-        <p class="productDescription">${product.description}</p>
-    </article>
-`;
-return productHTML;
+                    productHTML.href = `./product.html?id=${product._id}`;
+                    productHTML.innerHTML = `
+                                            <article>
+                                              <img src="${product.imageUrl}" alt="${product.altTxt}">
+                                                <h3 class="productName">${product.name}</h3>
+                                                  <p class="productDescription">${product.description}</p>
+                                            </article>
+                                              `;
+  return productHTML;
 }
 
 function createProducts(products){
@@ -35,3 +42,9 @@ function createProducts(products){
     });
 }
 getProducts();
+
+
+
+
+
+
