@@ -23,7 +23,9 @@ function createProduct(product) {
   //images
   createImg.src = product.imageUrl;
   createImg.alt = product.altTxt;
+  
   //couleurs
+
   let typeOfColors = product.colors;
   let selectColor = document.getElementById("colors");
   let htmlColors = "";
