@@ -46,6 +46,22 @@ function createProduct(product) {
   return product;
 }
 
+function checkQuantity(product, cart){
+  let isUpdate = false
+  cart.forEach(productCart =>{
+    if(productCart.color == product.color && productCart.id == product.id){
+      productCart.quantity = parseInt(product.quantity) + parseInt(productCart.quantity)
+      isUpdate = true
+    }
+  })
+  if (!isUpdate){
+    cart.push(product)
+  }
+  console.log(product)
+  return cart;
+ }
+
+
 
 const urlId = window.location.search;
 const urlSearchParams = new URLSearchParams(urlId);
@@ -67,11 +83,10 @@ function setData() {
   product.alt = img.alt;
   product.id = id;
   let cart = JSON.parse(localStorage.getItem("product"));
-
+  
   if (cart) {
- 
+    cart = checkQuantity(product, cart)
 
-    cart.push(product);
   } else {
     cart = [product];
   }

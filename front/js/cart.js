@@ -48,24 +48,6 @@ function updateCard(product){
   localStorage.setItem("product", JSON.stringify(cardProducts));
 }
 
-//------------------------------------------------------------------
-//---Check quantité 
-//------------------------------------------------------------------
-function checkQuantity(){
- let productId = document.querySelectorAll('[data-id]')
- let productColor = document.querySelectorAll('[data-color]')
- console.log(productId)
- console.log(productColor)
-}
-
-
-
-
-
-
-
-
-
 //-------------------------------------------------------------------
 //calcul prix total
 //-------------------------------------------------------------------
@@ -116,8 +98,7 @@ function deleteLine(color) {
   let indexProduct = cardProducts.findIndex(element => element.color === color);
   let cardWithProductDelete = cardProducts.splice(indexProduct, 1);
   localStorage.setItem("product", JSON.stringify(cardProducts));
-  document.querySelectorAll('.cart__item')
-  createProducts();
+  location.reload()
   console.log(cardWithProductDelete);
 }
 
@@ -153,7 +134,6 @@ function createProducts() {
 }
 
 createProducts();
-checkQuantity();
 displayTotal();
 
 
