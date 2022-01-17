@@ -1,12 +1,12 @@
 
 
 // // // //---------------------------------------------------------------------
-// // // //Integration des produits sur la page d'accueil
+// // // //Integration des produits sur la page panier
 // // // //---------------------------------------------------------------------
 function createProduct(product) {
 
   let productHTML = document.createElement('div');
-  let productQuantity = product.price * product.quantity
+  let productPriceTotal = product.price * product.quantity
   productHTML.innerHTML = `
                                               <article class="cart__item" data-id="${product.id}">
                                               <div class="cart__item__img">
@@ -16,7 +16,7 @@ function createProduct(product) {
                                               <div class="cart__item__content__titlePrice">
                                                 <h2>${product.name}</h2>
                                                 <p>${product.color}</p>
-                                                <p class='price'>${productQuantity} €</p>
+                                                <p class='price'>${productPriceTotal} €</p>
                                               </div>
                                               <div class="cart__item__content__settings">
                                                 <div class="cart__item__content__settings__quantity">
@@ -24,16 +24,50 @@ function createProduct(product) {
                                                   <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${product.quantity}">
                                                 </div>
                                                 <div class="cart__item__content__settings__delete">
-                                                  <p class="deleteItem" id="${product.id}">Supprimer</p>
+                                                  <p class="deleteItem" id="${product.id}" data-color="${product.color}">Supprimer</p>
                                                 </div>
                                               </div>
                                             </div>
                                               </article>
                                                 `;
+  productHTML.querySelector('.itemQuantity').addEventListener('change', function(){
+    product.quantity = this.value
+    let total = calculatePrice(product)
+
+    productHTML.querySelector('.price').textContent = total
+    displayTotal();
+    updateCard(product);
+  })                                              
   return productHTML;
 }
+function updateCard(product){
+  let cardProducts = JSON.parse(localStorage.getItem("product"));
+  let indexProduct = cardProducts.findIndex(element => element.color === product.color);
+  let cardWithProductDelete = cardProducts.splice(indexProduct, 1);
+  cardProducts.push(product);
+  localStorage.setItem("product", JSON.stringify(cardProducts));
+}
+
+//------------------------------------------------------------------
+//---Check quantité 
+//------------------------------------------------------------------
+function checkQuantity(){
+ let productId = document.querySelectorAll('[data-id]')
+ let productColor = document.querySelectorAll('[data-color]')
+ console.log(productId)
+ console.log(productColor)
+}
+
+
+
+
+
+
+
+
+
 //-------------------------------------------------------------------
-//calcul quantité et prix total
+//calcul prix total
 //-------------------------------------------------------------------
 function total() {
   let totalProduct = document.querySelectorAll('.price');
@@ -42,10 +76,12 @@ function total() {
 
     totalCart = parseFloat(product.innerText) + totalCart
 
-    console.log(product.innerText);
   });
   return totalCart;
 }
+//-------------------------------------------------------------------
+//calcul quantité total
+//-------------------------------------------------------------------
 
 function totalcartQuantity() {
   let totalQuantity = document.querySelectorAll('.itemQuantity')
@@ -53,12 +89,12 @@ function totalcartQuantity() {
     totalQuantity.forEach(product => {
 
     totalCartQuantity = parseInt(product.value) + totalCartQuantity
-
-    console.log(product.value)
   });
-  console.log(totalCartQuantity);
   return totalCartQuantity
 }
+//-------------------------------------------------------------------
+//Ajout des résultats en bas de page(quantité et prix totale)
+//-------------------------------------------------------------------
 
 function displayTotal() {
   let totalPrice = document.getElementById('totalPrice')
@@ -70,27 +106,36 @@ function displayTotal() {
 
 //-------------------------------------------------------------------
 //-------------------------------------------------------------------
-
+function calculatePrice(product){
+  let total = product.price * product.quantity
+  return total
+}
 // Rechercher l'élément du tableau qui a l'id et la couleur du noeud
-function selectLine() {
+function deleteLine(color) {
   let cardProducts = JSON.parse(localStorage.getItem("product"));
-  let indexProduct = cardProducts.findIndex(element => element.color === 'Blue');
+  let indexProduct = cardProducts.findIndex(element => element.color === color);
   let cardWithProductDelete = cardProducts.splice(indexProduct, 1);
+  localStorage.setItem("product", JSON.stringify(cardProducts));
+  document.querySelectorAll('.cart__item')
+  createProducts();
   console.log(cardWithProductDelete);
 }
 
-// Tu le supprime du panier
+
 
 
 //-------------------------------------------------------------------
 //selection de la ligne pour la supprimer
 //------------------------------------------------------------------- 
 function deleteProduct() {
-  document.getElementsByClassName("deleteItem")
-  document.addEventListener('click', () => selectLine());
+  let deleteItems = document.querySelectorAll(".deleteItem")
+  deleteItems.forEach(item => {
+    item.addEventListener('click', function(){
+      deleteLine(this.getAttribute("data-color"))
+    });    
+  })
 }
 
-deleteProduct();
 //-------------------------------------------------------------------
 //-------------------------------------------------------------------
 
@@ -103,11 +148,15 @@ function createProducts() {
     document.getElementById('cart__items')
       .appendChild(productHTML)
   });
+  deleteProduct()
   return true;
 }
 
 createProducts();
+checkQuantity();
 displayTotal();
+
+
 
 
 

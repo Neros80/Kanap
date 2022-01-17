@@ -1,3 +1,6 @@
+
+//-connection a l'API-----
+//------------------------
 function getProduct(id) {
   fetch(`http://localhost:3000/api/products/${id}`)
     .then(function (res) {
@@ -12,6 +15,9 @@ function getProduct(id) {
       // Une erreur est survenue
     });
 }
+
+//---------------------------------
+//---------------------------------
 
 function createProduct(product) {
   let productName = document.getElementById("title");
@@ -33,14 +39,14 @@ function createProduct(product) {
     htmlColors += `<option value="${color}">${color}</option>`;
   });
   selectColor.innerHTML = htmlColors;
-
   productName.innerHTML = product.name;
   productImage.appendChild(createImg);
   productPrice.innerHTML = product.price;
   productDescription.innerHTML = product.description;
-
   return product;
 }
+
+
 const urlId = window.location.search;
 const urlSearchParams = new URLSearchParams(urlId);
 const id = urlSearchParams.get("id");
@@ -97,6 +103,3 @@ function verfiName(product, cartProducts) {
   }
   return cartProducts
 }
-
-
-console.log(verfiName(product, products));
