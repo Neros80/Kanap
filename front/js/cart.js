@@ -133,38 +133,122 @@ function createProducts() {
   return true;
 }
 
-createProducts();
-displayTotal();
 
 
 
 
 
-function postData(url = '/order', data = {}) {
-  const response = fetch(url, {
+
+// function postData(url = '/order', data = {}) {
+//   const response = fetch(url, {
+//     method: "POST",
+//     headers: {
+//       'Content-Type': 'application/json'
+//     },
+//     body: JSON.stringify(data)
+//   });
+//   return response.json()
+// }
+
+
+
+// document.querySelector('#order').addEventListener('click', (e) => {
+//   e.preventDefault();
+//   let data = setData();
+//   let response = postData('http://localhost:3000/api/products', data)
+//   console.log(response)
+// })
+// function setData(){
+//   let cardProducts = JSON.parse(localStorage.getItem("product"));
+//   let products = []
+//   cardProducts.forEach(product => {
+//     products.push(product.id)
+//   })
+//   let data = {
+//     contact: {
+//       firstName: document.getElementById('firstName').value,
+//       lastName: document.getElementById('lastName').value,
+//       address: document.getElementById('address').value,
+//       city: document.getElementById('city').value,
+//       email: document.getElementById('email').value,
+//     },
+//     products: products
+//   }
+//   return data
+// }
+
+
+// function onPost(e) {
+//   e.preventDefault();
+//   let data = {
+//     firstname: form.elements['firstname'].value,
+//     lastName: form.elements['lastName'].value,
+//     address: form.elements['address'].value,
+//     city: form.elements['city'].value,
+//     email: form.elements['email'].value
+//   };
+
+//   postData('back/controlleurs/product.js', data)
+//     .then(data => {
+//       alertElement.classlist.remove('success', 'error');
+//       alertElement.innerHTML = data.message;
+//       console.log(data);
+
+//       if (data.success) {
+//         alertElement.classlist.add('success');
+//       }
+//       else {
+//         alertElement.classlist.add('error');
+//       }
+//     });
+//}
+
+
+// const newCart = {
+//   contact: {
+//           firstName: document.getElementById('firstName').value,
+//           lastName: document.getElementById('lastName').value,
+//           address: document.getElementById('address').value,
+//           city: document.getElementById('city').value,
+//           email: document.getElementById('email').value,
+// }
+// }; console.log (newCart)
+
+// const pObjects = {contact,product};
+// const reqOption = {
+//   method: 'POST',
+//   headers: { 'Content-Type': 'application/json'},
+//   body: JSON.stringify(pObjects)
+// };console.log(reqOption)
+
+async function postData(url = 'http://localhost:3000/api/products/order', data = {}) {
+  const response = await fetch(url, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(data)
   });
+  console.log(data)
   return response.json()
 }
-
-
 
 document.querySelector('#order').addEventListener('click', (e) => {
   e.preventDefault();
   let data = setData();
-  let response = postData('http://localhost:3000/api', data)
+  let response = postData('http://localhost:3000/api/products/order', data)
   console.log(response)
 })
-function setData(){
+
+
+function setData() {
   let cardProducts = JSON.parse(localStorage.getItem("product"));
   let products = []
   cardProducts.forEach(product => {
     products.push(product.id)
   })
+
+
   let data = {
     contact: {
       firstName: document.getElementById('firstName').value,
@@ -179,27 +263,6 @@ function setData(){
 }
 
 
-function onPost(e) {
-  e.preventDefault();
-  let data = {
-    firstname: form.elements['firstname'].value,
-    lastName: form.elements['lastName'].value,
-    address: form.elements['address'].value,
-    city: form.elements['city'].value,
-    email: form.elements['email'].value
-  };
 
-  postData('back/controlleurs/product.js', data)
-    .then(data => {
-      alertElement.classlist.remove('success', 'error');
-      alertElement.innerHTML = data.message;
-      console.log(data);
-
-      if (data.success) {
-        alertElement.classlist.add('success');
-      }
-      else {
-        alertElement.classlist.add('error');
-      }
-    });
-}
+createProducts();
+displayTotal();
