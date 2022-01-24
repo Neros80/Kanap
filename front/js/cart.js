@@ -87,12 +87,16 @@ function displayTotal() {
 
 
 //-------------------------------------------------------------------
+// Calcul du prix Total 
 //-------------------------------------------------------------------
 function calculatePrice(product) {
   let total = product.price * product.quantity
   return total
 }
+//-------------------------------------------------------------------
 // Rechercher l'élément du tableau qui a l'id et la couleur du noeud
+//-------------------------------------------------------------------
+
 function deleteLine(color) {
   let cardProducts = JSON.parse(localStorage.getItem("product"));
   let indexProduct = cardProducts.findIndex(element => element.color === color);
@@ -101,8 +105,6 @@ function deleteLine(color) {
   location.reload()
   console.log(cardWithProductDelete);
 }
-
-
 
 
 //-------------------------------------------------------------------
@@ -118,10 +120,8 @@ function deleteProduct() {
 }
 
 //-------------------------------------------------------------------
+//Ajout d'un nouvelle ligne
 //-------------------------------------------------------------------
-
-
-
 function createProducts() {
   let products = JSON.parse(localStorage.getItem("product"));
   products.forEach(product => {
@@ -221,6 +221,11 @@ function createProducts() {
 //   body: JSON.stringify(pObjects)
 // };console.log(reqOption)
 
+
+//-------------------------------------------------
+//envoie des données dans l'api
+//-------------------------------------------------
+
 async function postData(url = 'http://localhost:3000/api/products/order', data = {}) {
   const response = await fetch(url, {
     method: "POST",
@@ -266,3 +271,10 @@ function setData() {
 
 createProducts();
 displayTotal();
+
+
+
+
+//-----------------------------------------
+//Validation du formulaire
+//-----------------------------------------

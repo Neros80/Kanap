@@ -17,8 +17,8 @@ function getProduct(id) {
 }
 
 //---------------------------------
+//recuperation des donner de l'API pour creaer les produits sur la page d'acceuil
 //---------------------------------
-
 function createProduct(product) {
   let productName = document.getElementById("title");
   let productPrice = document.getElementById("price");
@@ -46,6 +46,11 @@ function createProduct(product) {
   return product;
 }
 
+
+//---------------------------------------
+// On verrifi les quantité avant de les envoyer dans le panier 
+//---------------------------------------
+
 function checkQuantity(product, cart){
   let isUpdate = false
   cart.forEach(productCart =>{
@@ -66,6 +71,10 @@ function checkQuantity(product, cart){
 const urlId = window.location.search;
 const urlSearchParams = new URLSearchParams(urlId);
 const id = urlSearchParams.get("id");
+
+//---------------------------------------
+//envoie des données dans le localStorage 
+//---------------------------------------
 
 function setData() {
   let product = {};
@@ -100,6 +109,9 @@ document.getElementById("addToCart").addEventListener("click", setData);
 
 getProduct(id);
 
+//-----------------------------------
+// Verification du nom et de la couleur afin des differencier les canapé identique
+//-----------------------------------
 
 function verfiName(product, cartProducts) {
   let isNew = true;
