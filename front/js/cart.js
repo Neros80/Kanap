@@ -226,22 +226,24 @@ function createProducts() {
 //envoie des données dans l'api
 //-------------------------------------------------
 
-async function postData(url = 'http://localhost:3000/api/products/order', data = {}) {
-  const response = await fetch(url, {
+ function postData(url = 'http://localhost:3000/api/products', data = {}) {
+  const response =  fetch(url, {
     method: "POST",
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+
     },
     body: JSON.stringify(data)
   });
   console.log(data)
-  return response.json()
+  // return response.JSON()
+  .then(response => response.json())
 }
 
 document.querySelector('#order').addEventListener('click', (e) => {
   e.preventDefault();
   let data = setData();
-  let response = postData('http://localhost:3000/api/products/order', data)
+  let response = postData(url = "http://localhost:3000/api/products/order", data)
   console.log(response)
 })
 
@@ -267,6 +269,31 @@ function setData() {
   return data
 }
 
+function command() {
+  console.log(document.forms["commande"]["lastName"])
+}
+
+// command()
+// function req(){
+//   let xhr = new XMLHttpRequest();
+//   xhr.onreadystatechange = function() {
+//     console.log(this);
+//     if (this.readyState == 4 && this.status == 200){
+//      demo.innerHTML = JSON.stringify(this.response);
+//     }
+//   };
+//   xhr.open("GET", "http://localhost:3000/api/products", true );
+//   xhr.send();
+// }
+
+// req()
+
+
+
+
+
+
+
 
 
 createProducts();
@@ -278,3 +305,101 @@ displayTotal();
 //-----------------------------------------
 //Validation du formulaire
 //-----------------------------------------
+
+function validation(){
+  let valid = document.getElementById('order');
+
+  //----validation prenom-------
+  let firstName = document.getElementById('firstName');
+  let firstNameErr = document.getElementById('firstNameErrorMsg');
+  let firstNameReg = /^[A-Za-z]+((\s)?([A-Za-z])+)*$/;
+  valid.addEventListener('click', firstName_valid)
+    function firstName_valid(e){
+      if (firstName.validity.valueMissing) {
+        e.preventDefault();
+        firstNameErr.textContent = 'Veulliez renseigner le Prenom';
+        firstNameErr.style.color = 'red';
+      // }else if (firstNameReg.test(firstName.value) == flase){
+      //   e.preventDefault();
+      //   firstNameErr.textContent = 'Format incorrect';
+      //   firstNameErr.style.color = 'orange';
+      }else{
+
+      }
+
+    }
+
+   //---Validation Nom de famille-------
+  let lastName = document.getElementById('lastName');
+  let lastNameErr = document.getElementById('lastNameErrorMsg');
+  let lastNameReg = /^[A-Za-z]+((\s)?([A-Za-z])+)*$/;
+  valid.addEventListener('click', lastName_valid)
+  function lastName_valid(e){
+    if (lastName.validity.valueMissing) {
+      e.preventDefault();
+      lastNameErr.textContent = 'Veulliez renseigner le Nom de famille';
+      lastNameErr.style.color = 'red';
+    // }else if (lastNameReg.test(lastName.value) == flase){
+    //   e.preventDefault();
+    //   lastNameErr.textContent = 'Format incorrect';
+    //   lastNameErr.style.color = 'orange';
+    }else{
+
+    }
+  }
+    //---Validation adresse----------
+    let address = document.getElementById('address');
+    let addressErr = document.getElementById('addressErrorMsg');
+    let addressReg = /^[A-Za-z]+((\s)?([A-Za-z])+)*$/;
+    valid.addEventListener('click', address_valid)
+    function address_valid(e){
+      if (address.validity.valueMissing) {
+        e.preventDefault();
+        addressErr.textContent = 'Veulliez renseigner votre adresse';
+        addressErr.style.color = 'red';
+      // }else if (addressReg.test(lastName.value) == flase){
+      //   e.preventDefault();
+      //   addressErr.style.color = 'orange';
+      //   addressErr.textContent = 'Format incorrect';
+      }else{
+      }
+    }
+        //---Validation Ville----------
+        let city = document.getElementById('city');
+        let cityErr = document.getElementById('cityErrorMsg');
+        let cityReg = /^[A-Za-z]+((\s)?([A-Za-z])+)*$/;
+        valid.addEventListener('click', city_valid)
+        function city_valid(e){
+          if (city.validity.valueMissing) {
+            e.preventDefault();
+            cityErr.textContent = 'Veulliez renseigner votre ville';
+            cityErr.style.color = 'red';
+          // }else if (cityReg.test(city.value) == flase){
+          //   e.preventDefault();
+          //   cityErr.style.color = 'orange';
+          //   cityErr.textContent = 'Format incorrect';
+          }else{
+          }
+        }
+          //---Validation Email----------
+          let email = document.getElementById('email');
+          let emailErr = document.getElementById('emailErrorMsg');
+          let emailReg = /([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}(;|$))/;
+          valid.addEventListener('click', email_valid)
+          function email_valid(e){
+            if (email.validity.valueMissing) {
+              e.preventDefault();
+              emailErr.textContent = 'Veulliez renseigner votre Email';
+              emailErr.style.color = 'red';
+            // }else if (emailReg.test(email.value) == flase){
+            //   e.preventDefault();
+            //   emailErr.style.color = 'orange';
+            //   emailErr.textContent = 'Format incorrect';
+            }else{
+            }
+          }
+  }
+
+
+
+validation()
