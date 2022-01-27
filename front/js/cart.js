@@ -134,118 +134,54 @@ function createProducts() {
 }
 
 
-
-
-
-
-
-// function postData(url = '/order', data = {}) {
-//   const response = fetch(url, {
-//     method: "POST",
-//     headers: {
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify(data)
-//   });
-//   return response.json()
-// }
-
-
-
-// document.querySelector('#order').addEventListener('click', (e) => {
-//   e.preventDefault();
-//   let data = setData();
-//   let response = postData('http://localhost:3000/api/products', data)
-//   console.log(response)
-// })
-// function setData(){
-//   let cardProducts = JSON.parse(localStorage.getItem("product"));
-//   let products = []
-//   cardProducts.forEach(product => {
-//     products.push(product.id)
-//   })
-//   let data = {
-//     contact: {
-//       firstName: document.getElementById('firstName').value,
-//       lastName: document.getElementById('lastName').value,
-//       address: document.getElementById('address').value,
-//       city: document.getElementById('city').value,
-//       email: document.getElementById('email').value,
-//     },
-//     products: products
-//   }
-//   return data
-// }
-
-
-// function onPost(e) {
-//   e.preventDefault();
-//   let data = {
-//     firstname: form.elements['firstname'].value,
-//     lastName: form.elements['lastName'].value,
-//     address: form.elements['address'].value,
-//     city: form.elements['city'].value,
-//     email: form.elements['email'].value
-//   };
-
-//   postData('back/controlleurs/product.js', data)
-//     .then(data => {
-//       alertElement.classlist.remove('success', 'error');
-//       alertElement.innerHTML = data.message;
-//       console.log(data);
-
-//       if (data.success) {
-//         alertElement.classlist.add('success');
-//       }
-//       else {
-//         alertElement.classlist.add('error');
-//       }
-//     });
-//}
-
-
-// const newCart = {
-//   contact: {
-//           firstName: document.getElementById('firstName').value,
-//           lastName: document.getElementById('lastName').value,
-//           address: document.getElementById('address').value,
-//           city: document.getElementById('city').value,
-//           email: document.getElementById('email').value,
-// }
-// }; console.log (newCart)
-
-// const pObjects = {contact,product};
-// const reqOption = {
-//   method: 'POST',
-//   headers: { 'Content-Type': 'application/json'},
-//   body: JSON.stringify(pObjects)
-// };console.log(reqOption)
-
-
 //-------------------------------------------------
 //envoie des données dans l'api
 //-------------------------------------------------
 
- function postData(url = 'http://localhost:3000/api/products', data = {}) {
-  const response =  fetch(url, {
+ async function postData(url = 'http://localhost:3000/api/products', data = {}) {
+  const response = await fetch(url, {
     method: "POST",
     headers: {
       'Content-Type': 'application/json',
 
     },
     body: JSON.stringify(data)
-  });
-  console.log(data)
-  // return response.JSON()
+  })
   .then(response => response.json())
+  .then(data => {
+    let orderId = data.orderId
+    window.location.href ='confirmation.html?orderId=' + orderId
+    return data
+   
+  })
+  
+  return response
+  
+}
+//-------------------------------------
+//Ajout de l'ID dans l'url et sur la page de validation
+//-------------------------------------
+
+let searchParams = new URLSearchParams(window.location.search);
+
+if (searchParams.has('orderId')) {
+  let orderId = searchParams.get('orderId')
+  let orderNum = document.getElementById('orderId')
+  orderNum.innerText = orderId
+  console.log(orderId)
+} else {
+  
 }
 
+console.log(searchParams.has('orderId'));
 document.querySelector('#order').addEventListener('click', (e) => {
   e.preventDefault();
   let data = setData();
+  console.log(data)
   let response = postData(url = "http://localhost:3000/api/products/order", data)
   console.log(response)
 })
+validation();
 
 
 function setData() {
@@ -273,29 +209,6 @@ function command() {
   console.log(document.forms["commande"]["lastName"])
 }
 
-// command()
-// function req(){
-//   let xhr = new XMLHttpRequest();
-//   xhr.onreadystatechange = function() {
-//     console.log(this);
-//     if (this.readyState == 4 && this.status == 200){
-//      demo.innerHTML = JSON.stringify(this.response);
-//     }
-//   };
-//   xhr.open("GET", "http://localhost:3000/api/products", true );
-//   xhr.send();
-// }
-
-// req()
-
-
-
-
-
-
-
-
-
 createProducts();
 displayTotal();
 
@@ -319,10 +232,10 @@ function validation(){
         e.preventDefault();
         firstNameErr.textContent = 'Veulliez renseigner le Prenom';
         firstNameErr.style.color = 'red';
-      // }else if (firstNameReg.test(firstName.value) == flase){
-      //   e.preventDefault();
-      //   firstNameErr.textContent = 'Format incorrect';
-      //   firstNameErr.style.color = 'orange';
+      }else if (!firstNameReg.test(firstName.value)){
+        e.preventDefault();
+        firstNameErr.textContent = 'Format incorrect';
+        firstNameErr.style.color = 'orange';
       }else{
 
       }
@@ -339,10 +252,10 @@ function validation(){
       e.preventDefault();
       lastNameErr.textContent = 'Veulliez renseigner le Nom de famille';
       lastNameErr.style.color = 'red';
-    // }else if (lastNameReg.test(lastName.value) == flase){
-    //   e.preventDefault();
-    //   lastNameErr.textContent = 'Format incorrect';
-    //   lastNameErr.style.color = 'orange';
+    }else if (!lastNameReg.test(lastName.value)){
+      e.preventDefault();
+      lastNameErr.textContent = 'Format incorrect';
+      lastNameErr.style.color = 'orange';
     }else{
 
     }
@@ -350,17 +263,17 @@ function validation(){
     //---Validation adresse----------
     let address = document.getElementById('address');
     let addressErr = document.getElementById('addressErrorMsg');
-    let addressReg = /^[A-Za-z]+((\s)?([A-Za-z])+)*$/;
+    let addressReg = /^[a-zA-Z0-9\s,'-]*$/;
     valid.addEventListener('click', address_valid)
     function address_valid(e){
       if (address.validity.valueMissing) {
         e.preventDefault();
         addressErr.textContent = 'Veulliez renseigner votre adresse';
         addressErr.style.color = 'red';
-      // }else if (addressReg.test(lastName.value) == flase){
-      //   e.preventDefault();
-      //   addressErr.style.color = 'orange';
-      //   addressErr.textContent = 'Format incorrect';
+      }else if (!addressReg.test(lastName.value)){
+        e.preventDefault();
+        addressErr.style.color = 'orange';
+        addressErr.textContent = 'Format incorrect';
       }else{
       }
     }
@@ -374,10 +287,10 @@ function validation(){
             e.preventDefault();
             cityErr.textContent = 'Veulliez renseigner votre ville';
             cityErr.style.color = 'red';
-          // }else if (cityReg.test(city.value) == flase){
-          //   e.preventDefault();
-          //   cityErr.style.color = 'orange';
-          //   cityErr.textContent = 'Format incorrect';
+          }else if (!cityReg.test(city.value)){
+            e.preventDefault();
+            cityErr.style.color = 'orange';
+            cityErr.textContent = 'Format incorrect';
           }else{
           }
         }
@@ -391,15 +304,11 @@ function validation(){
               e.preventDefault();
               emailErr.textContent = 'Veulliez renseigner votre Email';
               emailErr.style.color = 'red';
-            // }else if (emailReg.test(email.value) == flase){
-            //   e.preventDefault();
-            //   emailErr.style.color = 'orange';
-            //   emailErr.textContent = 'Format incorrect';
+            }else if (!emailReg.test(email.value)){
+              e.preventDefault();
+              emailErr.style.color = 'orange';
+              emailErr.textContent = 'Format incorrect';
             }else{
             }
           }
-  }
-
-
-
-validation()
+  };
