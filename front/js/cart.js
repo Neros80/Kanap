@@ -163,42 +163,6 @@ if (searchParams.has('orderId')) {
  
 };
 
-document.querySelector('#form').addEventListener('submit', (e) => {
-  e.preventDefault();
-  console.log('coucou');
-  let data = setData();
-  // console.log(data)
-  let response = postData(url = "http://localhost:3000/api/products/order", data)
-  // console.log(response)
-});
-
-
-
-function setData() {
-  let cardProducts = JSON.parse(localStorage.getItem("product"));
-  let products = []
-  cardProducts.forEach(product => {
-    products.push(product.id)
-  })
-
-
-  let data = {
-    contact: {
-      firstName: document.getElementById('firstName').value,
-      lastName: document.getElementById('lastName').value,
-      address: document.getElementById('address').value,
-      city: document.getElementById('city').value,
-      email: document.getElementById('email').value,
-    },
-    products: products
-  }
-  return data
-}
-
-function command() {
-  console.log(document.forms["commande"]["lastName"])
-}
-
 createProducts();
 displayTotal();
 
@@ -219,7 +183,7 @@ const form = document.querySelectorAll(
   }
 };
 //----------------check firstName
-function firstNameCheck(value){
+const firstNameCheck = (value) => {
   if (value.length <= 0 ){
     errorDisplay('firstName', "veulliez remplir le champ");
     firstName = null;
@@ -234,7 +198,7 @@ function firstNameCheck(value){
   }
 };
 //---------------check LastName
-function lastNameCheck(value){
+const lastNameCheck = (value) => {
   if (value.length <= 0 ){
     errorDisplay('lastName', "veulliez remplir le champ");
     lastName = null;
@@ -250,7 +214,7 @@ function lastNameCheck(value){
 };
 
 // //----------------------check address
-let addressCheck = (value) => {
+const addressCheck = (value) => {
   if(value.length <= 0 ){
     errorDisplay('address', "veulliez remplir le champ");
     address = null;
@@ -265,7 +229,7 @@ let addressCheck = (value) => {
   }
 };
 //-----------------check city
-let cityCheck = (value) => {
+const cityCheck = (value) => {
   if(value.length <= 0 ){
     errorDisplay('city', "veulliez remplir le champ");
     city = null;
@@ -281,7 +245,7 @@ let cityCheck = (value) => {
   }
 };
 //-----------------check Email
-let emailCheck = (value) => {
+const emailCheck = (value) => {
   if(value.length <= 0 ){
     errorDisplay('email', "veulliez remplir le champ");
     email = null;
@@ -321,118 +285,40 @@ form.forEach((name) => {
                   null;
     }
   });  
-});
+}); 
+document.querySelector('#form').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  if(firstName && lastName && address && city && email){
+    let data = setData();
+    // console.log(data)
+    let response = postData(url = "http://localhost:3000/api/products/order", data)
+    console.log(response)
+
+    
+  function setData() {
+  let cardProducts = JSON.parse(localStorage.getItem("product"));
+  let products = []
+  cardProducts.forEach(product => {
+    products.push(product.id)
+  })
+
+
+  let data = {
+    contact: {
+      firstName: document.getElementById('firstName').value,
+      lastName: document.getElementById('lastName').value,
+      address: document.getElementById('address').value,
+      city: document.getElementById('city').value,
+      email: document.getElementById('email').value,
+    },
+    products: products
+  }
+  return data
+}}else{
+  alert("Les champs ne sont pas remplis correctement")
+}
+}) 
 };
 
 test();
-
-
-// console.log(validation());
-
-//-----------------------------------------
-//Validation du formulaire
-//-----------------------------------------
-
-// function validation(){
-//   let valid = document.getElementById('order');
-
-
-//   //----validation prenom-------
-//   let firstName = document.getElementById('firstName');
-//   let firstNameErr = document.getElementById('firstNameErrorMsg');
-//   let firstNameReg = /^[A-Za-z]+((\s)?([A-Za-z])+)*$/;
- 
-//   valid.addEventListener('click', firstName_valid)
-  
-//      function firstName_valid(e){
-//       if (firstName.validity.valueMissing) {
-//         e.preventDefault()
-//         firstNameErr.textContent = 'Veulliez renseigner le Prenom';
-//         firstNameErr.style.color = 'red';
-//         return false
-//       }else if (!firstNameReg.test(firstName.value)){
-//         e.preventDefault()
-//         firstNameErr.textContent = 'Format incorrect';
-//         firstNameErr.style.color = 'orange';
-//         return false
-//       }else{
-//       }
-//     }
-
-
-
-
-//   //  //---Validation Nom de famille-------
-//   // let lastName = document.getElementById('lastName');
-//   // let lastNameErr = document.getElementById('lastNameErrorMsg');
-//   // let lastNameReg = /^[A-Za-z]+((\s)?([A-Za-z])+)*$/;
-//   // valid.addEventListener('click', lastName_valid)
-//   // function lastName_valid(e){
-//   //   if (lastName.validity.valueMissing) {
-//   //     e.preventDefault();
-//   //     lastNameErr.textContent = 'Veulliez renseigner le Nom de famille';
-//   //     lastNameErr.style.color = 'red';
-//   //   }else if (!lastNameReg.test(lastName.value)){
-//   //     e.preventDefault();
-//   //     lastNameErr.textContent = 'Format incorrect';
-//   //     lastNameErr.style.color = 'orange';
-//   //   }else{
-
-//   //   }
-//   // }
-//   //   //---Validation adresse----------
-//   //   let address = document.getElementById('address');
-//   //   let addressErr = document.getElementById('addressErrorMsg');
-//   //   let addressReg = /^[a-zA-Z0-9\s,'-]*$/;
-//   //   valid.addEventListener('click', address_valid)
-//   //   function address_valid(e){
-//   //     if (address.validity.valueMissing) {
-//   //       e.preventDefault();
-//   //       addressErr.textContent = 'Veulliez renseigner votre adresse';
-//   //       addressErr.style.color = 'red';
-//   //     }else if (!addressReg.test(lastName.value)){
-//   //       e.preventDefault();
-//   //       addressErr.style.color = 'orange';
-//   //       addressErr.textContent = 'Format incorrect';
-//   //     }else{
-//   //       addressVerif = true
-//   //     }
-//   //   }
-//   //       //---Validation Ville----------
-//   //       let city = document.getElementById('city');
-//   //       let cityErr = document.getElementById('cityErrorMsg');
-//   //       let cityReg = /^[A-Za-z]+((\s)?([A-Za-z])+)*$/;
-//   //       valid.addEventListener('click', city_valid)
-//   //       function city_valid(e){
-//   //         if (city.validity.valueMissing) {
-//   //           e.preventDefault();
-//   //           cityErr.textContent = 'Veulliez renseigner votre ville';
-//   //           cityErr.style.color = 'red';
-//   //         }else if (!cityReg.test(city.value)){
-//   //           e.preventDefault();
-//   //           cityErr.style.color = 'orange';
-//   //           cityErr.textContent = 'Format incorrect';
-//   //         }else{
-
-//   //         }
-//   //       }
-//   //         //---Validation Email----------
-//   //         let email = document.getElementById('email');
-//   //         let emailErr = document.getElementById('emailErrorMsg');
-//   //         let emailReg = /([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}(;|$))/;
-//   //         valid.addEventListener('click', email_valid)
-//   //         function email_valid(e){
-//   //           if (email.validity.valueMissing) {
-//   //             e.preventDefault();
-//   //             emailErr.textContent = 'Veulliez renseigner votre Email';
-//   //             emailErr.style.color = 'red';
-//   //           }else if (!emailReg.test(email.value)){
-//   //             e.preventDefault();
-//   //             emailErr.style.color = 'orange';
-//   //             emailErr.textContent = 'Format incorrect';
-//   //           }else{
-
-//   //           }
-//   //         }
-//   };
- 
