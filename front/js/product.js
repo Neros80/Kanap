@@ -81,13 +81,13 @@ function setData() {
   let selectColor = document.getElementById("colors");
   let quantity = document.getElementById("quantity");
   let name = document.getElementById("title");
-  let price = document.getElementById("price");
+  // let price = document.getElementById("price");
   let img = document.querySelector(".item__img img");
 
   product.color = selectColor.value;
   product.quantity = quantity.value;
   product.name = name.textContent;
-  product.price = price.textContent;
+  // product.price = price.textContent;
   product.img = img.src;
   product.alt = img.alt;
   product.id = id;
