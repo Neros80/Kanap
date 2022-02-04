@@ -128,8 +128,6 @@ function deleteProduct() {
     getProduct(product);
 
   });
-  console.log('coucou');
-  // deleteProduct();
   return true;
 };
 
@@ -199,7 +197,7 @@ if (searchParams.has('orderId')) {
 
 createProducts();
 
-function test() {
+function fomrValidation() {
   const form = document.querySelectorAll(
     'input[type="text"], input[type="email"]');
   let firstName, lastName, address, city, email;
@@ -355,4 +353,4 @@ function test() {
   })
 };
 
-test();
+fomrValidation();

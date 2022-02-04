@@ -106,25 +106,3 @@ function setData() {
 document.getElementById("addToCart").addEventListener("click", setData);
 
 getProduct(id);
-
-//-----------------------------------
-// Verification du nom et de la couleur afin des differencier les canapé identique
-//-----------------------------------
-
-function verfiName(product, cartProducts) {
-  let isNew = true;
-
-  cartProducts.forEach((cartProduct) => {
-    if (product.name == cartProduct.name
-      && product.color == cartProduct.color) {
-      cartProduct.quantity += product.quantity
-      console.log(cartProduct.quantity)
-      isNew = false
-    }
-  })
-
-  if (isNew) {
-    cartProducts.push(product);
-  }
-  return cartProducts
-}
