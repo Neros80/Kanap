@@ -1,6 +1,6 @@
-// // //------------------------------
-// // //Récupère les données de l'API
-// // //------------------------------
+//------------------------------
+//Récupère les données de l'API
+//------------------------------
 
 function getProducts() {
   fetch("http://localhost:3000/api/products")
@@ -18,9 +18,9 @@ function getProducts() {
 }
 
 
-// // // //---------------------------------------------------------------------
-// // // //Integration des produits sur la page d'accueil
-// // // //---------------------------------------------------------------------
+//---------------------------------------------------------------------
+//Integration des produits sur la page d'accueil
+//---------------------------------------------------------------------
 function createProduct(product) {
   let productHTML = document.createElement("a");
                     productHTML.href = `./product.html?id=${product._id}`;
