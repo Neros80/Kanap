@@ -14,7 +14,7 @@ function createProduct(product) {
                                               <div class="cart__item__content__titlePrice">
                                                 <h2>${product.name}</h2>
                                                 <p>${product.color}</p>
-                                                <p class='unitPrice'>${product.price}</p>
+                                                <p class='unitPrice'>${product.price} </p>
                                                 <p class='price'>${productPriceTotal} €</p>
                                               </div>
                                               <div class="cart__item__content__settings">
@@ -33,7 +33,7 @@ function createProduct(product) {
     product.quantity = this.value
     product.price = productHTML.querySelector('.unitPrice').textContent
     let total = calculatePrice(product)
-    
+
     productHTML.querySelector('.price').textContent = total
     displayTotal();
     updateCard(product);
@@ -85,7 +85,7 @@ function displayTotal() {
   totalQuantity.textContent = totalcartQuantity();
 }
 //-------------------------------------------------------------------
-// Calcul du prix Total 
+// Calcul du prix en fonction de la quantité 
 //-------------------------------------------------------------------
 function calculatePrice(product) {
   let total = product.price * product.quantity
@@ -98,9 +98,13 @@ function deleteLine(color) {
   let cardProducts = JSON.parse(localStorage.getItem("product"));
   let indexProduct = cardProducts.findIndex(element => element.color === color);
   let cardWithProductDelete = cardProducts.splice(indexProduct, 1);
-  localStorage.setItem("product", JSON.stringify(cardProducts));
+  if (indexProduct === -1) {
+    return false
+  } else {
+    localStorage.setItem("product", JSON.stringify(cardProducts));
+    console.log(cardWithProductDelete);
+  }
   location.reload()
-  console.log(cardWithProductDelete);
 }
 //-------------------------------------------------------------------
 //selection de la ligne pour la supprimer
@@ -109,10 +113,9 @@ function deleteProduct() {
   let deleteItems = document.querySelectorAll(".deleteItem")
   console.log('coucou2');
   deleteItems.forEach(item => {
-    item.addEventListener('click', function (){
+    item.addEventListener('click', function () {
       console.log('test');
       deleteLine(this.getAttribute("data-color"))
-      
     });
   });
 };
@@ -120,7 +123,7 @@ function deleteProduct() {
 //-------------------------------------------------------------------
 //Ajout d'une nouvelle ligne
 //-------------------------------------------------------------------
- function createProducts() {
+function createProducts() {
   let products = JSON.parse(localStorage.getItem("product"));
 
   products.forEach(product => {
@@ -130,32 +133,39 @@ function deleteProduct() {
   });
   return true;
 };
+//-------------------------------------
+//Récupérer le prix dans l'api
+//--------------------------------------
 
-async function getProduct(product) {
-  await fetch(`http://localhost:3000/api/products/${product.id}`)
+
+function getProduct(product) {
+  fetch(`http://localhost:3000/api/products/${product.id}`)
     .then(function (res) {
       if (res.ok) {
         return res.json();
+
       }
+
     })
+
     .then(function (data) {
+
       product.price = data.price;
       let productHTML = createProduct(product);
       document.getElementById('cart__items')
         .appendChild(productHTML);
 
       let total = calculatePrice(product)
+      deleteProduct();
+      displayTotal();
 
       productHTML.querySelector('.price').textContent = total
-      displayTotal();
-      deleteProduct();
 
     })
     .catch(function (err) {
       // Une erreur est survenue
     });
 }
-
 
 //-------------------------------------------------
 //envoie des données dans l'api
@@ -192,7 +202,6 @@ if (searchParams.has('orderId')) {
   orderNum.innerText = orderId
   console.log(orderNum)
 } else {
-
 };
 
 createProducts();
