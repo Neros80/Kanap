@@ -29,7 +29,7 @@ function createProduct(product) {
   //images
   createImg.src = product.imageUrl;
   createImg.alt = product.altTxt;
-  
+
   //couleurs
 
   let typeOfColors = product.colors;
@@ -51,20 +51,20 @@ function createProduct(product) {
 // On verrifi les quantité avant de les envoyer dans le panier 
 //---------------------------------------
 
-function checkQuantity(product, cart){
+function checkQuantity(product, cart) {
   let isUpdate = false
-  cart.forEach(productCart =>{
-    if(productCart.color == product.color && productCart.id == product.id){
+  cart.forEach(productCart => {
+    if (productCart.color == product.color && productCart.id == product.id) {
       productCart.quantity = parseInt(product.quantity) + parseInt(productCart.quantity)
       isUpdate = true
     }
   })
-  if (!isUpdate){
+  if (!isUpdate) {
     cart.push(product)
   }
   console.log(product)
   return cart;
- }
+}
 
 
 
@@ -90,7 +90,7 @@ function setData() {
   product.alt = img.alt;
   product.id = id;
   let cart = JSON.parse(localStorage.getItem("product"));
-  
+
   if (cart) {
     cart = checkQuantity(product, cart)
 

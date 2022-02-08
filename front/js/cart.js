@@ -1,6 +1,6 @@
-// // // //---------------------------------------------------------------------
-// // // //Integration des produits sur la page panier
-// // // //---------------------------------------------------------------------
+//---------------------------------------------------------------------
+//Integration des produits sur la page panier
+//---------------------------------------------------------------------
 function createProduct(product) {
 
   let productHTML = document.createElement('div');
@@ -111,10 +111,10 @@ function deleteLine(color) {
 //------------------------------------------------------------------- 
 function deleteProduct() {
   let deleteItems = document.querySelectorAll(".deleteItem")
-  console.log('coucou2');
+  // console.log('coucou2');
   deleteItems.forEach(item => {
     item.addEventListener('click', function () {
-      console.log('test');
+      // console.log('test');
       deleteLine(this.getAttribute("data-color"))
     });
   });
